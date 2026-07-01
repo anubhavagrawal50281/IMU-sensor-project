@@ -1,4 +1,4 @@
-# Python cache
+﻿# Python cache
 __pycache__/
 *.py[cod]
 *.pyo
@@ -32,8 +32,9 @@ desktop.ini
 .idea/
 *.code-workspace
 
-# Render deployment folder (separate repo)
-render/
 
 # Logs
 *.log
+
+# Nested git repos (temporarily renamed during commit)
+.git_save/

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Sessions{% endblock %} — Motion Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #faf8ff;
+      --surface:   #ffffff;
+      --surface-2: #f2f3ff;
+      --surface-3: #eaedff;
+      --surface-4: #e2e7ff;
+      --border:    #c2c6d6;
+      --border-2:  #727785;
+      --text:      #131b2e;
+      --text-2:    #424754;
+      --text-3:    #727785;
+      --accent:    #0058be;
+      --accent-dk: #004395;
+      --accent-bg: rgba(0,88,190,0.10);
+      --purple:    #6b38d4;
+      --purple-bg: rgba(107,56,212,0.10);
+      --amber:     #825100;
+      --amber-bg:  rgba(130,81,0,0.10);
+      --green:     #1a7a3b;
+      --green-bg:  rgba(26,122,59,0.10);
+      --red:       #ba1a1a;
+      --red-bg:    rgba(186,26,26,0.10);
+      --c-yaw:     #0058be;
+      --c-pitch:   #6b38d4;
+      --c-roll:    #825100;
+      --radius:    8px;
+      --radius-lg: 12px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+      --font: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--bg); color:var(--text); font-family:var(--font); font-size:13px; line-height:1.5; -webkit-font-smoothing:antialiased; min-height:100vh; }
+    .ms { font-family:'Material Symbols Outlined'; font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 20; font-size:18px; line-height:1; user-select:none; }
+    .ms.fill { font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 20; }
+
+    /* ── Top header ─────────────────────────────── */
+    .ms-topbar {
+      height:56px; background:#131b2e;
+      display:flex; align-items:center; gap:14px; padding:0 28px;
+      position:sticky; top:0; z-index:100;
+      box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    }
+    .ms-logo {
+      width:32px; height:32px; border-radius:8px; flex-shrink:0;
+      background:linear-gradient(135deg,#0058be,#6b38d4);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .ms-logo .ms { color:#fff; font-size:17px; }
+    .ms-brand  { font-size:.9rem; font-weight:800; color:#fff; letter-spacing:-.01em; }
+    .ms-divider{ width:1px; height:18px; background:rgba(255,255,255,0.15); }
+    .ms-sub    { font-size:.75rem; font-weight:600; color:rgba(255,255,255,0.50); }
+    .ms-topbar-right { margin-left:auto; display:flex; align-items:center; gap:8px; }
+    .ms-chip {
+      padding:4px 12px; border-radius:20px; font-size:.68rem; font-weight:700;
+      background:rgba(0,88,190,0.25); color:rgba(255,255,255,0.85);
+      border:1px solid rgba(0,88,190,0.4); display:flex; align-items:center; gap:5px;
+    }
+    .ms-chip .ms { font-size:13px; }
+
+    /* ── Page wrapper ───────────────────────────── */
+    main { padding:40px 28px 80px; max-width:1000px; margin:0 auto; }
+    main.full { padding:0; max-width:none; margin:0; height:calc(100vh - 56px); overflow:hidden; }
+
+    /* ── Utilities ──────────────────────────────── */
+    .badge {
+      display:inline-flex; align-items:center; gap:4px;
+      padding:3px 10px; border-radius:20px; font-size:.68rem; font-weight:600;
+      background:var(--surface-3); color:var(--text-2); border:1px solid var(--border);
+    }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); }
+    .card-title { font-size:.62rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--text-3); }
+    .btn {
+      display:inline-flex; align-items:center; gap:6px; padding:8px 16px;
+      border-radius:var(--radius); font-size:.78rem; font-weight:600;
+      font-family:var(--font); cursor:pointer; border:none; transition:all .15s; text-decoration:none;
+    }
+    .btn .ms { font-size:15px; }
+    .btn-ghost   { background:var(--surface-2); border:1.5px solid var(--border); color:var(--text-2); }
+    .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-primary { background:var(--accent); color:#fff; }
+    .btn-primary:hover { background:var(--accent-dk); }
+    .btn-danger  { background:var(--red-bg); border:1.5px solid rgba(186,26,26,0.25); color:var(--red); }
+
+    /* Feature badge colours */
+    .sf-draw    { background:rgba(0,88,190,0.10);   color:var(--c-yaw);   border-color:rgba(0,88,190,0.2);   }
+    .sf-cube    { background:rgba(107,56,212,0.10); color:var(--c-pitch); border-color:rgba(107,56,212,0.2); }
+    .sf-phone3d { background:rgba(130,81,0,0.10);   color:var(--c-roll);  border-color:rgba(130,81,0,0.2);   }
+    .sf-drums   { background:rgba(186,26,26,0.10);  color:var(--red);     border-color:rgba(186,26,26,0.2);  }
+
+    /* ── Live Replay bar ──────────────────────────────── */
+    #rp-bar {
+      position:fixed; bottom:0; left:0; right:0; z-index:9998;
+      background:rgba(19,27,46,0.97); backdrop-filter:blur(14px);
+      border-top:1px solid rgba(255,255,255,0.08);
+      padding:12px 20px 14px; display:flex; align-items:center; gap:14px;
+      transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    #rp-bar.show { transform:translateY(0); }
+    #rp-bar .rp-back { padding:6px 10px !important; color:rgba(255,255,255,.6) !important; border-color:rgba(255,255,255,.12) !important; background:rgba(255,255,255,.05) !important; flex-shrink:0; }
+    #rp-bar .rp-back:hover { color:#fff !important; }
+    .rp-icon { color:var(--accent) !important; font-size:22px !important; flex-shrink:0; }
+    .rp-info { display:flex; align-items:center; gap:10px; }
+    .rp-title { font-size:.8rem; font-weight:700; color:rgba(255,255,255,.9); white-space:nowrap; }
+    .rp-sub   { font-size:.68rem; color:rgba(255,255,255,.4); margin-top:1px; white-space:nowrap; }
+    .rp-progress { flex:1; display:flex; align-items:center; gap:10px; min-width:80px; }
+    .rp-track { flex:1; height:4px; background:rgba(255,255,255,.12); border-radius:2px; overflow:hidden; }
+    .rp-fill  { height:100%; width:0; background:var(--accent); border-radius:2px; transition:width .1s linear; }
+    .rp-time  { font-size:.7rem; color:rgba(255,255,255,.45); font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .rp-speed { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:6px; color:rgba(255,255,255,.7); font-size:.72rem; padding:5px 8px; font-family:var(--font); cursor:pointer; flex-shrink:0; }
+    .rp-stop-btn { font-size:.72rem !important; padding:6px 14px !important; white-space:nowrap; flex-shrink:0; }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="ms-topbar">
+    <a href="/sessions" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div class="ms-logo"><span class="ms fill">sensors</span></div>
+      <div class="ms-brand">Motion Studio</div>
+    </a>
+    <div class="ms-divider"></div>
+    <div class="ms-sub">Session Archive</div>
+    <div class="ms-topbar-right">
+      <div class="ms-chip"><span class="ms fill">cloud_done</span> Read-only viewer</div>
+    </div>
+  </header>
+
+  <main class="{% block main_class %}{% endblock %}">{% block content %}{% endblock %}</main>
+
+  <script src="{{ url_for('static', filename='chart.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='three.min.js') }}"></script>
+  <!-- socket.io stub so feature templates load without errors on Render -->
+  <script>
+  if (typeof io === 'undefined') {
+    window.io = function() {
+      const noop = () => {};
+      return { on: noop, emit: noop, off: noop };
+    };
+  }
+  </script>
+  <script>
+  /* ── Live Replay engine ──────────────────── */
+  function initReplay(onIMUFn) {
+    const sid = new URLSearchParams(window.location.search).get('replay');
+    if (!sid) return;
+
+    const bar = document.createElement('div');
+    bar.id = 'rp-bar';
+    bar.innerHTML =
+      '<a href="/sessions/' + sid + '" class="rp-back btn btn-ghost"><span class="ms">arrow_back</span></a>' +
+      '<div class="rp-info"><span class="ms fill rp-icon" id="rp-icon">sensors</span>' +
+      '<div><div class="rp-title" id="rp-title">Loading replay…</div>' +
+      '<div class="rp-sub" id="rp-sub"></div></div></div>' +
+      '<div class="rp-progress"><div class="rp-track"><div class="rp-fill" id="rp-fill"></div></div>' +
+      '<span class="rp-time" id="rp-time">0:00 / 0:00</span></div>' +
+      '<select class="rp-speed" id="rp-speed">' +
+        '<option value="0.5">0.5×</option><option value="1" selected>1×</option>' +
+        '<option value="2">2×</option><option value="4">4×</option></select>' +
+      '<button class="rp-stop-btn btn btn-danger" id="rp-stop"><span class="ms">stop</span> Stop</button>';
+    document.body.appendChild(bar);
+    requestAnimationFrame(() => bar.classList.add('show'));
+
+    let stopped = false, speed = 1, timer = null;
+    const fmtMs = ms => { const s = Math.floor(ms/1000); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); };
+
+    document.getElementById('rp-speed').onchange = e => { speed = +e.target.value; };
+    document.getElementById('rp-stop').onclick = () => {
+      stopped = true; clearTimeout(timer);
+      bar.classList.remove('show');
+      setTimeout(() => bar.remove(), 320);
+    };
+
+    fetch('/api/sessions/' + sid)
+      .then(r => r.json())
+      .then(({ session, readings }) => {
+        const ICONS  = { draw:'draw', cube:'view_in_ar', phone3d:'phone_android', drums:'graphic_eq' };
+        const LABELS = { draw:'Air Drawing', cube:'3D Cube', phone3d:'Phone 3D', drums:'Drum Kit' };
+        document.getElementById('rp-icon').textContent  = ICONS[session.feature]  || 'sensors';
+        document.getElementById('rp-title').textContent = LABELS[session.feature] || session.feature;
+        document.getElementById('rp-sub').textContent   = 'Session #' + session.id + ' · ' + readings.length + ' readings';
+
+        if (!readings || readings.length === 0) {
+          document.getElementById('rp-title').textContent = 'No readings in this session';
+          return;
+        }
+
+        const totalMs  = (readings[readings.length - 1].t || 0) - (readings[0].t || 0);
+        const totalStr = fmtMs(totalMs);
+        let idx = 0;
+
+        onIMUFn(readings[0]);
+
+        function step() {
+          if (stopped || idx >= readings.length) {
+            if (!stopped) {
+              document.getElementById('rp-title').textContent = 'Replay complete';
+              document.getElementById('rp-sub').textContent  = '';
+              const btn = document.getElementById('rp-stop');
+              btn.innerHTML = '<span class="ms">close</span> Close';
+              btn.onclick   = () => { bar.classList.remove('show'); setTimeout(() => bar.remove(), 320); };
+            }
+            return;
+          }
+          const r = readings[idx];
+          onIMUFn(r);
+
+          const elapsed = (r.t || 0) - (readings[0].t || 0);
+          document.getElementById('rp-fill').style.width = totalMs > 0 ? (elapsed/totalMs*100).toFixed(1) + '%' : '0%';
+          document.getElementById('rp-time').textContent = fmtMs(elapsed) + ' / ' + totalStr;
+
+          idx++;
+          if (idx < readings.length) {
+            const delay = ((readings[idx].t || 0) - (r.t || 0)) / speed;
+            timer = setTimeout(step, Math.max(8, Math.min(delay, 500)));
+          } else {
+            step();
+          }
+        }
+
+        timer = setTimeout(step, 600);
+      })
+      .catch(() => { document.getElementById('rp-title').textContent = 'Failed to load session data'; });
+  }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
